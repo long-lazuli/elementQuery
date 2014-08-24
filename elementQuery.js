@@ -268,9 +268,7 @@
 
             var posX = offset.x - scrolled.x;
             var posY = offset.y - scrolled.y;
-            console.log ("The top-left corner of the div relative to the top-left corner of the browser's client area: \n" 
-                    + " horizontal: " + posX + "px\n vertical: " +  posY + "px");
-        
+
           return {top: posY, left: posX};
     }
   
