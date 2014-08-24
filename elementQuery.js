@@ -78,7 +78,7 @@
 
         if (selectorText) {
 
-            var regex = /(\[(min\-width|max\-width|min\-height|max\-height)\~\=(\'|\")([0-9]*.?[0-9]+)(px|em)(\'|\")\])(\[(min\-width|max\-width|min\-height|max\-height)\~\=(\'|\")([0-9]*.?[0-9]+)(px|em)(\'|\")\])?/gi;
+            var regex = /(\[(min\-width|max\-width|min\-height|max\-height|min\-scrolltop|max\-scrolltop)\~\=(\'|\")([0-9]*.?[0-9]+)(px|em)(\'|\")\])(\[(min\-width|max\-width|min\-height|max\-height|min\-scrolltop|max\-scrolltop)\~\=(\'|\")([0-9]*.?[0-9]+)(px|em)(\'|\")\])?/gi;
 
             // Split out the full selectors separated by a comma ','
             var selectors = selectorText.split(",");
@@ -92,7 +92,7 @@
                     result = regex.exec(selectors[i]);
                     if (result != null) {
 
-                        // result[2] = min-width|max-width|min-height|max-height
+                        // result[2] = min-width|max-width|min-height|max-height|min-scrolltop|max-scrolltop
                         // result[4] = number
                         // result[5] = px|em
                         // result[7] = has another
@@ -117,7 +117,7 @@
                                         }
 
                                         // Remove any sibling element queries
-                                        tail = tail.replace(/(\[(min\-width|max\-width|min\-height|max\-height)\~\=(\'|\")([0-9]*.?[0-9]+)(px|em)(\'|\")\])/gi, "");
+                                        tail = tail.replace(/(\[(min\-width|max\-width|min\-height|max\-height|min\-scrolltop|max\-scrolltop)\~\=(\'|\")([0-9]*.?[0-9]+)(px|em)(\'|\")\])/gi, "");
                                         selector += tail;
                                     }
                                 }
@@ -235,6 +235,45 @@
         }
     };
 
+      var GetOffset = function (object, offset) {
+        if (!object)
+              return;
+          offset.x += object.offsetLeft;
+          offset.y += object.offsetTop;
+
+          GetOffset (object.offsetParent, offset);
+      }
+
+      var GetScrolled = function (object, scrolled) {
+          if (!object)
+              return;
+          scrolled.x += object.scrollLeft;
+          scrolled.y += object.scrollTop;
+
+          if (object.tagName.toLowerCase () != "html") {
+              GetScrolled (object.parentNode, scrolled);
+          }
+      }
+
+      
+    var GetTopLeft = function (element) {
+           if (!element)
+              return;
+     
+            var offset = {x : 0, y : 0};
+            GetOffset (element, offset);
+
+            var scrolled = {x : 0, y : 0};
+            GetScrolled (element.parentNode, scrolled);
+
+            var posX = offset.x - scrolled.x;
+            var posY = offset.y - scrolled.y;
+            console.log ("The top-left corner of the div relative to the top-left corner of the browser's client area: \n" 
+                    + " horizontal: " + posX + "px\n vertical: " +  posY + "px");
+        
+          return {top: posY, left: posX};
+    }
+  
     var init = function () {
 
         // Process the style sheets
@@ -277,11 +316,14 @@
 
                             /* NOTE: Using offsetWidth/Height so an element can be adjusted when it reaches a specific size.
                             /* For Nested queries scrollWidth/Height or clientWidth/Height may sometime be desired but are not supported. */
-
+                            console.log(GetTopLeft(element));
+                          
                             if ((j == "min-width" && element.offsetWidth >= val) ||
                                 (j == "max-width" && element.offsetWidth <= val) ||
                                 (j == "min-height" && element.offsetHeight >= val) ||
-                                (j == "max-height" && element.offsetHeight <= val)) {
+                                (j == "max-height" && element.offsetHeight <= val)||
+                                (j == "min-scrolltop" && GetTopLeft(element).top >= val) ||
+                                (j == "max-scrolltop" && GetTopLeft(element).top <= val)) {
                                 // Add matching attr value
                                 addTo(element, j, k);
                             }
@@ -354,11 +396,13 @@
 
     if (window.addEventListener) {
         window.addEventListener("resize", refresh, false);
+        window.addEventListener("scroll", refresh, false);
         window.addEventListener("DOMContentLoaded", init, false);
         window.addEventListener("load", init, false);
     }
     else if (window.attachEvent) {
         window.attachEvent("onresize", refresh);
+        window.attachEvent("onscroll", refresh);
         window.attachEvent("onload", init);
     }
 }(this, document, undefined));
