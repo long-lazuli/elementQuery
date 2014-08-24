@@ -33,7 +33,7 @@ body {
   background-color: #74bd0a;
 }
 .menu[max-scrolltop~="1em"] li {
-  backgroung-color: red !important;
+  color: red;
 }
 
 .menu a {
