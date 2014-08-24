@@ -32,8 +32,8 @@ body {
   text-align: left;
   background-color: #74bd0a;
 }
-.menu[max-scrolltop~="1em"] li {
-  color: red;
+.menu[max-scrolltop~="0em"] li {
+  background-color: red;
 }
 
 .menu a {
