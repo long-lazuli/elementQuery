@@ -1,68 +1,60 @@
 body {
-    font-family: sans-serif;
+  font-family: sans-serif;
 }
 
 .container {
-    margin-top: 1em;
-    border: 2px solid #ccc;
-    border-radius: 0.25em;
-    padding: 1em;
+  margin-top: 1em;
+  border: 2px solid #ccc;
+  border-radius: 0.25em;
+  padding: 1em;
 }
 
 .menu {
-    padding: 0 0.5em;
-    background: #eee;
-    border-radius: 0.25em;
-  
-  ul {
-      margin: 0;
-      padding: 0.125em 0;
-      list-style: none;
-  }
-
-  li {
-      margin: 0.5em 0.125em;
-      padding: 0.5em 1em;
-      color: #fff;
-      background-color: #0094ff;
-      text-align: center;
-      border-radius: 0.25em;
-  }
-
-  &[min-width~="25em"] li {
-      display: inline-block;
-      text-align: left;
-      background-color: #74bd0a;
-  }
- 
-  &[max-scrolltop~="1em"] li {
-      backgroung-color: red!important;
-    
-  }
- 
-  
-  
+  padding: 0 0.5em;
+  background: #eee;
+  border-radius: 0.25em;
+}
+.menu ul {
+  margin: 0;
+  padding: 0.125em 0;
+  list-style: none;
+}
+.menu li {
+  margin: 0.5em 0.125em;
+  padding: 0.5em 1em;
+  color: #fff;
+  background-color: #0094ff;
+  text-align: center;
+  border-radius: 0.25em;
+}
+.menu[min-width~="25em"] li {
+  display: inline-block;
+  text-align: left;
+  background-color: #74bd0a;
+}
+.menu[max-scrolltop~="1em"] li {
+  backgroung-color: red !important;
 }
 
 .menu a {
-    color: #fff;
-    text-decoration: none;
+  color: #fff;
+  text-decoration: none;
 }
-        
+
 h1 {
-    font-size: 1.25em;
+  font-size: 1.25em;
 }
 
 p {
-    margin: 0 0 1em;;
+  margin: 0 0 1em;
 }
 
 code {
-    padding: 0.25em 0.5em;
-    color: #000;
-    background-color: #f9f9f9;
+  padding: 0.25em 0.5em;
+  color: #000;
+  background-color: #f9f9f9;
 }
 
 a {
-    color: #3a97c4;
+  color: #3a97c4;
 }
